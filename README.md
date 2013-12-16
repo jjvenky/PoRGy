@@ -55,10 +55,10 @@ A: These are available on the *Equations *tab in Stella.
 
 **Downloads:**
 
-  * Venkiteswaran *et al.* Dynamics of dissolved oxygen isotopic ratios: a transient model to quantify primary production, community respiration, and air–water exchange in aquatic ecosystems (the paper describing PoRGy). The original publication is available in [Oecologia](http://dx.doi.org/10.1007/s00442-007-0744-9). Author-created versions are available in letter and A4 sizes. (pdf file, about 450 k)
-  * Venkiteswaran *et al.* Aquatic metabolism and ecosystem health assessment using dissolved O2 stable isotope diel curves. The original publication is available in [Ecological Applications](http://dx.doi.org/10.1890/07-0491.1). The ESA's copyright transfer agreement allows me to make available their PDF file here. (pdf file, about 1.0 M)
- * PoRGy model (stm file, about 170 k)
- * isee Player or Stella from [isee systems](http://www.iseesystems.com)
+* Venkiteswaran *et al.* Dynamics of dissolved oxygen isotopic ratios: a transient model to quantify primary production, community respiration, and air–water exchange in aquatic ecosystems (the paper describing PoRGy). The original publication is available in [Oecologia](http://dx.doi.org/10.1007/s00442-007-0744-9). Author-created versions are available in letter and A4 sizes. (pdf file, about 450 k)
+* Venkiteswaran *et al.* Aquatic metabolism and ecosystem health assessment using dissolved O2 stable isotope diel curves. The original publication is available in [Ecological Applications](http://dx.doi.org/10.1890/07-0491.1). The ESA's copyright transfer agreement allows me to make available their PDF file here. (pdf file, about 1.0 M)
+* PoRGy model (stm file, about 170 k)
+* isee Player or Stella from [isee systems](http://www.iseesystems.com)
 
 **License:**
 
