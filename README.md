@@ -51,7 +51,7 @@ A: It's in the works.
 
 *Q: Is the source code or the equations on which PoRGy is based available?*
 
-A: These are available on the *Equations *tab in Stella.
+A: These are available on the *Equations* tab in Stella.
 
 **Downloads:**
 
