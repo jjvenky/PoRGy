@@ -1,0 +1,1722 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xmile version="1.0" level="3" xmlns="http://www.systemdynamics.org/XMILE" xmlns:isee="http://iseesystems.com/XMILE">
+    <header>
+        <smile version="1.0">
+            <uses_arrays>
+                <dimensions>
+                    <dim name="Temperature" size="2">
+                        <elem name="Tmax" />
+                        <elem name="Tmin" />
+                    </dim>
+                </dimensions>
+            </uses_arrays>
+        </smile>
+        <name>PoRGy_-_v100</name>
+        <uuid>697fb11b-69f7-47f8-8dd1-296cc9887a7d</uuid>
+        <vendor>isee systems</vendor>
+        <product version="10.0.1" lang="en">iThink</product>
+    </header>
+    <sim_specs>
+        <start>0</start>
+        <stop>48</stop>
+        <dt reciprocal="true">0.25</dt>
+        <method>RK4</method>
+        <time_units>Hours</time_units>
+    </sim_specs>
+    <model_units>
+        <units name="cubic meters/L">
+            <eqn>m^3/L</eqn>
+        </units>
+        <units name="hours/degree">
+            <eqn>hr/deg</eqn>
+        </units>
+        <units>
+            <eqn>L/m^3</eqn>
+        </units>
+        <units name="meters/hour">
+            <eqn>m/hour</eqn>
+        </units>
+        <units>
+            <eqn>mg/hr</eqn>
+        </units>
+        <units>
+            <eqn>mg/L</eqn>
+        </units>
+        <units name="mg/m^2/hour">
+            <eqn>mg/hour-m^2</eqn>
+        </units>
+    </model_units>
+    <isee:prefs layer="interface" grid_width="20" grid_height="50" divide_by_zero_alert="true" hide_taskbar="true" show_module_prefix="true" hide_pads_icons="true">
+        <isee:window width="1280" height="942" />
+        <isee:security enable_outputs_dialogs="true" password="true" />
+        <isee:print_setup width="594" height="774" orientation="portrait" />
+    </isee:prefs>
+    <isee:equation_prefs order_by="sector" show_documentation="true" />
+    <model password="Jj^zH7FcSifL(A0K">
+        <module name="TmaxminCheck">
+            <display x="342" y="91" color="blue">
+                <label_side>bottom</label_side>
+                <label_angle>275</label_angle>
+            </display>
+        </module>
+        <aux name="Tmaxminarray" access="input">
+            <dimensions>
+                <dim name="Temperature" />
+            </dimensions>
+            <units>degrees C</units>
+            <display x="422" y="168" color="blue" />
+        </aux>
+        <stock name="O2mass">
+            <doc>Mass of total O2 and the light isotopologue (16O16O) since the light isotopologue is &gt;99% of the total O2.&#x0D;&#x0D;9067 is 100% saturation at 20C in a 1m3 box&#x0D;</doc>
+            <eqn>9067</eqn>
+            <inflow>GEmass</inflow>
+            <inflow>Pmass</inflow>
+            <outflow>Rmass</outflow>
+            <non_negative />
+            <units>milligrams</units>
+            <display x="251" y="391" color="blue">
+                <label_side>center</label_side>
+            </display>
+        </stock>
+        <flow name="GEmass">
+            <doc>Mass of gas exchange.&#x0D;&#x0D;This depends on the gas exchange rate (O2 saturation and the gas exchange coefficient).</doc>
+            <eqn>GErate*Area</eqn>
+            <units>mg/hr</units>
+            <display x="254" y="328" color="blue">
+                <label_side>right</label_side>
+                <pts>
+                    <pt x="254" y="282" />
+                    <pt x="254" y="374" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="GErate">
+            <doc>Aerial rate of gas exchange.&#x0D;&#x0D;This depends on the O2 saturation and the gas exchange coefficient.</doc>
+            <eqn>k*(O2satconc-O2conc)*Lperm3</eqn>
+            <units>mg/m^2/hour</units>
+            <display x="173" y="270" color="blue">
+                <label_angle>266</label_angle>
+            </display>
+        </aux>
+        <aux name="Area">
+            <doc>Surface area of the box model in square metres.&#x0D;This is used for aerial rates, such as gas exchange.</doc>
+            <eqn>1</eqn>
+            <units>square meters</units>
+            <display x="690" y="44" color="blue" />
+        </aux>
+        <aux name="Depth">
+            <doc>Depth of the box model in metres.&#x0D;This is used for calculating concentration.&#x0D;&#x0D;N.B.: P and R rates are aerial.</doc>
+            <eqn>1</eqn>
+            <units>meters</units>
+            <display x="645" y="85" color="blue" />
+        </aux>
+        <aux name="O2conc">
+            <eqn>O2mass/Volume*m3perL</eqn>
+            <units>mg/L</units>
+            <display x="482" y="392" color="blue" />
+        </aux>
+        <aux name="O2satconc">
+            <doc>O2 saturation after pressure corrrection.</doc>
+            <eqn>O2satcon1atm*AtmPressure_Correction</eqn>
+            <units>mg/L</units>
+            <display x="560" y="114" color="blue" />
+        </aux>
+        <aux name="k">
+            <doc>Gas exchange coefficient in units m/hr.&#x0D;This k is assumed to be good enough for the light isotopologue (16O16O) and then adjust for the heavy isotopologue (18O16O) (as per Knox et al. 1992).</doc>
+            <eqn>0.1</eqn>
+            <units>meters/hour</units>
+            <display x="26" y="476" color="blue" />
+        </aux>
+        <aux name="diffO2conc">
+            <eqn>O2satconc-O2conc</eqn>
+            <display x="482" y="337" color="blue">
+                <label_side>right</label_side>
+                <label_angle>8</label_angle>
+            </display>
+        </aux>
+        <aux name="TinC">
+            <doc>if Tswitch is 1 then use the sinusoidal temperature with Tmax and Tmin&#x0D;if Tswitch is 2 then use the 5th order polynomial&#x0D;otherwise use 20C (this case should not occur)</doc>
+            <eqn>IF Tswitch=1 THEN TmaxminCheck.Tmaxminarray[Tmin]*(1-Tmodifier)+TmaxminCheck.Tmaxminarray[Tmax]*(Tmodifier) ELSE&#x0D;IF Tswitch=2 THEN Tpoly ELSE 20</eqn>
+            <units>degrees C</units>
+            <display x="412" y="57" color="blue">
+                <label_side>top</label_side>
+                <label_angle>77</label_angle>
+            </display>
+        </aux>
+        <aux name="Lperm3">
+            <doc>Convertion factor from cubic metres to litres.</doc>
+            <eqn>1000</eqn>
+            <units>L/m^3</units>
+            <display x="814" y="329" color="#FF7F00" />
+        </aux>
+        <aux name="m3perL">
+            <doc>Convertion factor from litres to cubic metres.</doc>
+            <eqn>.001</eqn>
+            <units>cubic meters/L</units>
+            <display x="762" y="329" color="#FF7F00" />
+        </aux>
+        <flow name="Pmass">
+            <eqn>IF Pmaxswitch=1 then Pmaxrate*PRLMPmaxmodifier*Area ELSE 0</eqn>
+            <non_negative />
+            <units>mg/hr</units>
+            <display x="184" y="392" color="blue">
+                <pts>
+                    <pt x="139" y="392" />
+                    <pt x="229" y="392" />
+                </pts>
+            </display>
+        </flow>
+        <flow name="Rmass">
+            <eqn>Rrate*Area</eqn>
+            <non_negative />
+            <units>mg/hr</units>
+            <display x="335" y="389" color="blue">
+                <pts>
+                    <pt x="273" y="389" />
+                    <pt x="397" y="389" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="Pmaxrate">
+            <doc>Standardised aerial maximum rate of photosynthesis (O2 evolution).&#x0D;This rate is modified by the light model, before being used in the model, so that O2 evolution is a direct function of incident light.&#x0D;</doc>
+            <eqn>2000</eqn>
+            <units>mg/m^2/hour</units>
+            <display x="228" y="432" color="blue" />
+        </aux>
+        <aux name="Rrate">
+            <doc>Van&apos;t Hoff-Arrhenius equation to adjust the rate of respiration (at 20 C) to the current temperature. The &quot;theta&quot; is assumed to be 1.047 -- a common value in waste water BOD/CBOD modelling (cf. Borsuk et al. 2004; Bowie et al. 1985)&#x0D;&#x0D;Borsuk ME, Stow CA, Reckhow KH (2004) Confounding Effect of Flow on Estuarine Response to Nitrogen Loading. Environ. Eng. 130:605-614 doi 10.1061/(ASCE)0733-9372(2004)130:6(605)&#x0D;&#x0D;Bowie GL, Mills WB, Porcella DB, Campbell CL, Pagenkopf JR, Rupp GL, Johnson KM, Chan PWH, Gherini SA, Chamberlin CE (1985) Rates, constants, and kinetic formulations in surface water quality modeling. Second Edition, EPA/600/3-85/040, USEPA, Athens&#x0D;</doc>
+            <eqn>IF RArrheniusswitch=1 THEN Rrate20*(1.047^(TinC-20)) ELSE&#x0D;Rrate20</eqn>
+            <units>mg/m^2/hour</units>
+            <display x="335" y="327" color="blue" />
+        </aux>
+        <stock name="O2massiso">
+            <doc>Mass of the heavy isotopologue (18O16O).&#x0A;&#x0A;9067 is 100% saturation at 20C in a 1m3 box&#x0A;0.00205373 is 24.2per mill</doc>
+            <eqn>9067 * 0.00205373</eqn>
+            <inflow>Pmassiso</inflow>
+            <inflow>GEmassiso</inflow>
+            <outflow>Rmassiso</outflow>
+            <non_negative />
+            <units>milligrams</units>
+            <display x="253" y="657" color="blue">
+                <label_side>center</label_side>
+            </display>
+        </stock>
+        <aux name="O2satcon1atm">
+            <doc>O2 saturation concentration.&#x0D;&#x0D;O2 solubility is calculated as per Weiss (1970) and assuming no salinity (unless otherwise spcified). Solubility is converted from mL(STP)/L to mg/L by a factor of 1.4276.&#x0D;&#x0D;Weiss, R.F. 1970. The solubility of nitrogen, oxygen and argon in water and seawater. Deep-Sea Res. 17: 721.735.</doc>
+            <eqn>EXP(-173.4292+249.6339*(100/TinK)+143.3483*LN(TinK/100)-21.8492*(TinK/100) +&#x0D;salinity*(-0.033096+0.014259*(TinK/100)-0.0017000*(TinK/100)^2) )*1.4276</eqn>
+            <display x="560" y="57" color="blue" />
+        </aux>
+        <aux name="RatioH2O">
+            <eqn>RatioVSMOW * (d18OH2O / 1000 + 1)</eqn>
+            <units>Unitless</units>
+            <display x="156" y="610" color="blue" />
+        </aux>
+        <aux name="RatioO2">
+            <eqn>O2massiso/O2mass</eqn>
+            <units>Unitless</units>
+            <display x="485" y="658" color="blue">
+                <label_side>right</label_side>
+                <label_angle>8</label_angle>
+            </display>
+        </aux>
+        <aux name="Ratioair">
+            <doc>This is the 18/16 ratio of O2 in air.&#x0D;&#x0D;Kroopnick and Craig (1972) determined the delta18O of O2 in air to be +23.5 per mill.&#x0D;This is converted via the ratio of VSMOW to get the ratio of O2 in air.&#x0D;&#x0D;Note that the 1SD of their measurement was 0.14permil and 1SEM was 0.03. However, the isotopic ratio was measured as CO2 (O2 combusted to CO2 on graphite) and then adjusted via the fractionation factor between CO2 and water -- the Bottinga and Craig value of 1.0409. This value is, &quot;almost certainly correct to +/-0.3 per mil, which is thus the absolute accuracy of the delta18O of atmospheric oxygen relative to SMOW: 23.5+/-0.3 per mil.&quot;&#x0D;&#x0D;Kroopnick, P. and Craig, H. 1972. Atmospheric Oxygen: Isotopic Composition and Solubility Fractionation. Science 175: 54-55.&#x0D;&#x0D;In recent publications, atmospheric d18O-O2 is reported to have a value of +23.8 per mill relative to VSMOW (Coplen et al., 2001, USGS Water-Resources Investigations Report 01-4222), whereas others forgo conventional VSMOW-SLAP standardization procedures and report dissolved O2 results as per mill deviations from local air O2 (Luz et al., 1999, Nature 400:547-550).</doc>
+            <eqn>0.0020523</eqn>
+            <units>Unitless</units>
+            <display x="715" y="329" color="blue" />
+        </aux>
+        <flow name="Pmassiso">
+            <eqn>Pmass*(RatioH2O*alphaP)</eqn>
+            <non_negative />
+            <units>mg/hr</units>
+            <display x="184" y="657" color="blue">
+                <pts>
+                    <pt x="137" y="657" />
+                    <pt x="231" y="657" />
+                </pts>
+            </display>
+        </flow>
+        <flow name="Rmassiso">
+            <eqn>Rmass*(RatioO2*alphaR)</eqn>
+            <non_negative />
+            <units>mg/hr</units>
+            <display x="335" y="659" color="blue">
+                <pts>
+                    <pt x="275" y="659" />
+                    <pt x="396" y="659" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="alphaP">
+            <doc>Fractionation factor for photosynthesis.&#x0D;&#x0D;Determined by Guy et al. (1993) to be: 1.000+/-0.003&#x0D;&#x0D;Guy, R.D., Fogel, M.L., Berry, J.A. 1993. Photosynthetic fractionation of the stable isotopes of oxygen and carbon. Plant Physiol. 101: 37-47.</doc>
+            <eqn>1.000</eqn>
+            <units>Unitless</units>
+            <display x="870" y="377" color="blue" />
+        </aux>
+        <aux name="alphaR">
+            <doc>Fractionation factor for (community) respiration.&#x0D;&#x0D;This fractionation factor should be &lt;=1 since the light isotopologue (16O16O) is consumed faster than the heavy isotopologue (18O16O). The exact value of the fractionation will depend on:&#x0D;1. pathway of O2 comsumption;&#x0D;2. diffusional limitation (boundary layer); and&#x0D;3. type of organism.&#x0D;&#x0D;Kiddon et al. (1993) present data for alphaR from 0.974 to 0.995 for different organisms.&#x0D;&#x0D;Kiddon, J., Bender, M.L., Orchardo, J., Caron D.A., Goldman, J.C., Dennett M. 1993. Isotopic fractionation of oxygen by respiring marine organisms. Global Biogeochem. Cycles 7(3): 679-694.</doc>
+            <eqn>0.995</eqn>
+            <units>Unitless</units>
+            <display x="815" y="377" color="blue" />
+        </aux>
+        <aux name="alphaGeq">
+            <doc>Equilibrium fractionation factor reported in Benson &amp; Krause 1984, fits very well up to 100C (first reported in Benson et al. 1979 table VIII, which has good data to 60C.)</doc>
+            <eqn>(-0.72951 + 426.96 / TinK) / 1000 + 1</eqn>
+            <units>Unitless</units>
+            <display x="715" y="377" color="blue" />
+        </aux>
+        <aux name="TinK">
+            <eqn>TinC+273.15</eqn>
+            <units>degrees K</units>
+            <display x="496" y="57" color="blue">
+                <label_side>top</label_side>
+            </display>
+        </aux>
+        <flow name="GEmassiso">
+            <doc>Essentially this is a standard GE equations: k * (Concsat - Conc)&#x0D;k for 18O16O: k*alphaGk&#x0D;Concsat for 18O16O: O2satconc*Ratioair*alphaGeq&#x0D;Conc for 18O16O: O2conc*RatioO2&#x0D;&#x0D;Convert flux rate to mass by area and from litres to m3.</doc>
+            <eqn>k*alphaGk*(O2satconc*Ratioair*alphaGeq-O2conc*RatioO2)*Area*Lperm3</eqn>
+            <units>mg/hr</units>
+            <display x="260" y="733" color="blue">
+                <label_side>right</label_side>
+                <label_angle>357</label_angle>
+                <pts>
+                    <pt x="260" y="792" />
+                    <pt x="260" y="674" />
+                </pts>
+            </display>
+        </flow>
+        <aux name="diffd18OO2">
+            <eqn>((((Ratioair*alphaGeq)/RatioVSMOW)-1)*1000)-(((RatioO2/RatioVSMOW)-1)*1000)</eqn>
+            <display x="485" y="593" color="blue">
+                <label_side>left</label_side>
+                <label_angle>176</label_angle>
+                <scale min="0" max="18.489999999999998" />
+            </display>
+        </aux>
+        <aux name="RatioVSMOW">
+            <doc>This is the 18/16 ratio of VSMOW.&#x0D;&#x0D;SMOW was defined by Craig (1961).&#x0D;&#x0D;Craig, H. 1961. Science 133: 1833.</doc>
+            <eqn>0.0020052</eqn>
+            <units>Unitless</units>
+            <display x="662" y="329" color="blue" />
+        </aux>
+        <aux name="d18OO2">
+            <doc>d18O-O2 in the ecosystem.</doc>
+            <eqn>((RatioO2/RatioVSMOW)-1)*1000</eqn>
+            <display x="485" y="712" color="blue" />
+        </aux>
+        <aux name="SolarHour">
+            <doc>This is the Solar Hour whereby Solar Noon is adjusted to occur when the sun is directly overhead, but the Local Time will not be 12:00 because of Time Zone, Daylight Savings Time, and Longitude.</doc>
+            <eqn>LocalHour - (-degperhour*Longitude - (-TZ) + DST)</eqn>
+            <units>hours</units>
+            <display x="119" y="58" color="blue">
+                <label_side>top</label_side>
+                <label_angle>73</label_angle>
+            </display>
+        </aux>
+        <aux name="Longitude">
+            <doc>This is the Longitude in degrees where +ve is east and -ve is west.&#x0D;-93.72111 is the ELA.</doc>
+            <eqn>-93.72111</eqn>
+            <units>degrees</units>
+            <display x="840" y="87" color="red" />
+        </aux>
+        <aux name="Volume">
+            <eqn>Area*Depth</eqn>
+            <units>cubic meters</units>
+            <display x="645" y="44" color="blue" />
+        </aux>
+        <aux name="Tmax_in_C">
+            <doc>Maximum temperature in degrees C. This is used to created a diel temperature curve.</doc>
+            <eqn>25</eqn>
+            <units>degrees C</units>
+            <to>TmaxminCheck.Tmax_in_C</to>
+            <display x="277" y="93" color="blue" />
+        </aux>
+        <aux name="Tmin_in_C">
+            <doc>Minimum temperature in degrees C. This is used to created a diel temperature curve.</doc>
+            <eqn>20</eqn>
+            <units>degrees C</units>
+            <to>TmaxminCheck.Tmin_in_C</to>
+            <display x="277" y="145" color="blue" />
+        </aux>
+        <aux name="Tmodifier">
+            <eqn>(1 + sin(pi*((SolarHour+Tdelay)+12)/12) ) / 2</eqn>
+            <display x="202" y="58" color="blue">
+                <label_side>top</label_side>
+            </display>
+        </aux>
+        <aux name="PRLMPmaxmodifier">
+            <eqn>PotentialRadiation/SolarConstant</eqn>
+            <display x="532" y="1148" color="blue" />
+        </aux>
+        <aux name="altitude">
+            <doc>Altitude of the area in metres. Default is 1.</doc>
+            <eqn>1</eqn>
+            <display x="72" y="1348" color="red" />
+        </aux>
+        <aux name="aspect">
+            <doc>Aspect (or surface azimuth) is the orientation of the surface of the area to the North-South axes of the sun in degrees. Must not be 0. Default is 0.001.</doc>
+            <eqn>0.001</eqn>
+            <display x="72" y="1098" color="red" />
+        </aux>
+        <aux name="AtmPressure&#x0D;Correction">
+            <doc>This works well enough without resorting to R (gas constant) and T (temp in kelvins).&#x0D;The results is within 0.001 between 10 and 20 C</doc>
+            <eqn>((288.15 - 0.0065 * altitude) / 288.15)^5.256</eqn>
+            <display x="132" y="1348" color="blue" />
+        </aux>
+        <aux name="cosIncide">
+            <doc>The angle of incident is the angle between of the incoming solar beams and the aspect and slope of the surface. It is used to correct the incoming solar flux for the surface area on which these solar beams are projected. The angle itself is not calculated, but only the cosine of the angle of incident cosIncidence, which is used directly to correct the solar flux normal to the beam. The cosine of the angle of incidence is calculated according to (Campbell, 1981):&#x0A;cosIncident = cos(SolAlt) · sin(SlopMap) · cos(SolAzi-AspMap) + sin(SolAlt) · cos(SlopMap)&#x0A;</doc>
+            <eqn>SIN(SolarAltitude1 * PI / 180) * COS(slope * PI / 180) + COS(SolarAltitude1 * PI /180) * SIN(slope * PI / 180) * COS((SolarAzimuth - aspect) * PI / 180)</eqn>
+            <display x="132" y="1148" color="blue" />
+        </aux>
+        <aux name="DayOfYear">
+            <doc>This is the Julian day.</doc>
+            <eqn>190</eqn>
+            <display x="801" y="42" color="red">
+                <label_angle>266</label_angle>
+            </display>
+        </aux>
+        <aux name="HourAng">
+            <doc>The Hour Angle describes the movement of the sun around the earth in 24 hours, which equals 15 degrees longitude per hour (360°/24h). The Hour Angle, in degrees, is given by:&#x0D;HourAng = 15 · (Hour-12)</doc>
+            <eqn>15 * (SolarHour-12)</eqn>
+            <display x="212" y="1148" color="blue" />
+        </aux>
+        <aux name="Latitude">
+            <doc>This is the Latitude in degrees where +ve is north and -ve is south.&#x0D;49.66389 is the ELA.</doc>
+            <eqn>49.66389</eqn>
+            <units>degrees</units>
+            <display x="801" y="87" color="red" />
+        </aux>
+        <aux name="slope">
+            <doc>Slope of the area in degrees. Must not be 0. Default is 0.001.</doc>
+            <eqn>0.001</eqn>
+            <display x="72" y="1148" color="red" />
+        </aux>
+        <aux name="OpCorr">
+            <doc>Combined Optical Correction parameter, in which the relative path length of the optical air mass is corrected for altitude. To calculate the relative path length of an optical air mass corrected for altitude, the relative path length of optical air mass at sea level is corrected for the atmospheric pressure at altitude. Thus Mh is calculated with (Kreider &amp; Kreith, 1975):&#x0A;&#x0A;Mh = M0 · AtmPcor&#x0A;&#x0A;The relative path length of the optical air mass at sea level M0 is calculated according to (Kreider &amp; Kreith, 1975):&#x0A;&#x0A;M0 = SQRT{1229 + (614 * sin(SolAlt))2 } - 614 · sin(SolAlt)}&#x0A;&#x0A;And the atmospheric pressure correction AtmPcor is given by (List, 1984):&#x0A;&#x0A;AtmPcor = ((288 - 0.0065 * Map)/288)5.256&#x0A;</doc>
+            <eqn>transmisivity^((SQRT(1229 + (614 * SIN(SolarAltitude1 * PI / 180))^2) - 614 * SIN(SolarAltitude1 * PI / 180)) * AtmPressure_Correction)</eqn>
+            <display x="212" y="1348" color="blue" />
+        </aux>
+        <aux name="PotentialRadiation">
+            <eqn>Stotal</eqn>
+            <display x="532" y="1198" color="blue" />
+        </aux>
+        <aux name="Sdiffusive">
+            <doc>Indirect or diffuse sunlight is calculated for each solar altitude. When the sun is above the horizon it is assumed that all cells receive the same amount of diffuse radiation, corrected for their altitude. Diffuse radiation, in W.m-2, is calculated according to:&#x0A;&#x0A;Sdiff = Sout * (0.271 - 0.294 * Trans^Mh) * sin(SolAlt)&#x0A;&#x0A;where Trans^Mh is OpCorr.</doc>
+            <eqn>IF (Souterlayer * (0.271 - 0.294 * OpCorr) * SIN(SolarAltitude1 * PI / 180)) &lt; 0 THEN 0&#x0A;ELSE (Souterlayer * (0.271 - 0.294 * OpCorr) * SIN(SolarAltitude1 * PI / 180))</eqn>
+            <display x="372" y="1398" color="blue" />
+        </aux>
+        <aux name="Sdirect">
+            <doc>To calculate direct radiation on the earth&apos;s surface, the incoming radiation normal to the beam must be corrected by the orientation and slope of the surface cosIncident. To calculate the actual radiation energy a correction for cloud cover Cloud [-] can be taken into account (default 1, no clouds). Only those cells, which are not in the shade of neighbouring cells, receive direct sunlight, in W.m-2, which was given by Shade (1: no shade, 0 shade). Direct radiation is now given by :&#x0D;&#x0D;Sdir = Snor · cosIncident · Shade · Cloud&#x0D;&#x0D;Currently the model does not handle shade or clouds</doc>
+            <eqn>IF Snormal*cosIncide &lt; 0 THEN 0&#x0D;ELSE Snormal*cosIncide</eqn>
+            <display x="272" y="1348" color="blue" />
+        </aux>
+        <aux name="SolarConstant">
+            <doc>The Solar Constant of 1367 W.m-2 (Duffie and Beckman, 1991).</doc>
+            <eqn>1367</eqn>
+            <display x="870" y="329" color="blue" />
+        </aux>
+        <aux name="Snormal">
+            <doc>The radiation, which reaches the earth surface normal to the beam, is decreased due to the amount of air it has to pass through and the transmissivity of the air at the location of the study area. The radiation normal to the beam, in W.m-2, is given by (Gates, 1980):&#x0D;&#x0D;Snor = Sout · Trans^Mh &#x0D;&#x0D;where Trans^Mh is OpCorr</doc>
+            <eqn>OpCorr*Souterlayer</eqn>
+            <display x="212" y="1398" color="blue" />
+        </aux>
+        <aux name="SolarAltitude2">
+            <doc>The position or height of the sun above the horizon is called the Solar Altitude or Solar Angle. Solar Altitude, in degrees, can be calculated for each location and moment during a year according to (Gates, 1980):&#x0A;SolAlt = asin{sin(Lat) · sin(SolDec) + cos(Lat) · cos(SolDec) · cos(HourAng)}&#x0A;&#x0A;Stella cannot do asin, so the portion between the {} is calculated here and passed on to SolAlt for reworking via atan.</doc>
+            <eqn>sin(Latitude * PI / 180) * sin(SolarDeclination * PI / 180) + cos(Latitude * PI / 180) * cos(SolarDeclination * PI / 180) * cos(HourAng * PI / 180)</eqn>
+            <display x="292" y="1248" color="blue" />
+        </aux>
+        <aux name="SolarAltitude1">
+            <eqn>arctan(SolarAltitude2 / (sqrt(1 - SolarAltitude2^2))) *180 / PI</eqn>
+            <display x="372" y="1248" color="blue" />
+        </aux>
+        <aux name="SolarAzimuth">
+            <doc>Solar azimuth is the angle between the solar beams and the North-South axes of the earth. Solar azimuth SolAzi [deg] is calculated with (Oke, 1987):&#x0A;SolAzi = acos((sin(SolDec) · cos(Lat) - cos(SolDec) · sin(Lat) · cos(HourAng)) / cos(SolAlt))&#x0A;For Hour &lt;= 12: SolAzi = SolAzi&#x0A;For Hour &gt; 12: SolAzi = 360 - SolAzi&#x0A;Solar azimuth is set to 90 if 89.994 &lt; SolAzi &lt; 90 and is set to 270 if 269.994 &lt; SolAzi &lt; 270. (pers. comm. R.Sluiter, Aug &apos;99). &#x0A;</doc>
+            <eqn>MIN(0.999, ((SIN(SolarDeclination * PI / 180) * COS(Latitude * PI / 180) * SIN(Latitude * PI / 180) * COS(HourAng * PI / 180)) / COS(SolarAltitude1 * PI / 180)))</eqn>
+            <display x="132" y="1248" color="blue" />
+        </aux>
+        <aux name="SolarAzimuthCorrection">
+            <eqn>IF(SolarHour &lt; 12) THEN SolarAzimuth&#x0D;ELSE (360 - SolarAzimuth)</eqn>
+            <display x="132" y="1298" color="blue" />
+        </aux>
+        <aux name="transmisivity">
+            <doc>Transmissivity of the air in fraction. Default is 0.8.&#x0D;Transmissivity is usually between 0.5 and 0.8, but can be as low as 0.4 in the tropics (Whitmore et al., 1993). A value of 0.6 is commonly used (Jetten, 1994; Whitmore et al., 1993).</doc>
+            <eqn>0.8</eqn>
+            <display x="72" y="1398" color="red" />
+        </aux>
+        <aux name="SolarDeclination">
+            <doc>Solar declination is the annual fluctuation of the sun between the two tropics and varies between -23.45 and +23.45 degrees latitude. Solar declination, in degrees, is calculated according to (Supitt et al., 1994):&#x0A;SolDec = -23.45 · cos(360 · (Day + 10) / 365)&#x0A;</doc>
+            <eqn>-23.45 * cos(360 * (DayOfYear + 10) / 365 * PI / 180)</eqn>
+            <display x="292" y="1148" color="blue" />
+        </aux>
+        <aux name="Souterlayer">
+            <doc>Solar radiation, in W.m-2, that reach the outer layer of the atmosphere is calculated with (Kreider &amp; Kreith, 1975):&#x0A;&#x0A;Sout = SolConst · (1 + 0.034 · cos(360 · Julian/365))&#x0A;</doc>
+            <eqn>SolarConstant * (1 + 0.034 * COS((2 * PI * DayOfYear / 365)))</eqn>
+            <display x="272" y="1398" color="blue" />
+        </aux>
+        <aux name="Stotal">
+            <doc>Total incoming radiation, W.m-2, is calculated with:&#x0D;&#x0D;Stot = Sdir + Sdiff&#x0D;</doc>
+            <eqn>Sdirect+Sdiffusive</eqn>
+            <display x="532" y="1398" color="blue" />
+        </aux>
+        <aux name="TZ">
+            <doc>This is the Time Zone is hours from UT where +ve is east of Greenwich and -ve is west of Greenwich.&#x0D;-6 is the ELA.</doc>
+            <eqn>-6</eqn>
+            <units>hours</units>
+            <display x="872" y="86" color="red" />
+        </aux>
+        <aux name="DST">
+            <doc>This is for Daylight Savings Time where 0 is no and 1 is a 1 hour correction.</doc>
+            <eqn>1</eqn>
+            <units>hours</units>
+            <display x="900" y="86" color="red" />
+        </aux>
+        <aux name="LocalHour">
+            <doc>This is the Local Time in hours. The counter simply counts up from 0 to 24 hours.</doc>
+            <eqn>counter(0,24)</eqn>
+            <units>hours</units>
+            <display x="57" y="58" color="#008F44">
+                <label_angle>279</label_angle>
+            </display>
+        </aux>
+        <aux name="Tdelay">
+            <doc>This is the Time Delay between the Solar Noon and the water temperature maximum. This is an adequate fix until a better model of temperature change is produced.</doc>
+            <eqn>2.5</eqn>
+            <display x="202" y="96" color="blue" />
+        </aux>
+        <aux name="d18OH2O">
+            <doc>Delta 18O of the H2O.&#x0D;Used for the photosynthetic input of O2.</doc>
+            <eqn>-8</eqn>
+            <display x="156" y="543" color="blue" />
+        </aux>
+        <aux name="Rrate20">
+            <doc>Standardised aerial respiration rate at 20 C.&#x0D;This rate is modified by an Arrhenius equation to adjust for temperature before being used in the model.</doc>
+            <eqn>1000</eqn>
+            <units>mg/m^2/hour</units>
+            <display x="385" y="327" color="blue" />
+        </aux>
+        <aux name="alphaGk">
+            <doc>Gas exchange fractionation as a result of the slight difference between the k for the light isotopologue (16O16O) and the heavy isotopologue (18O16O). Knox et al. 1992 JGR confirm this value.</doc>
+            <eqn>0.9972</eqn>
+            <units>Unitless</units>
+            <display x="761" y="377" color="blue" />
+        </aux>
+        <aux name="Year">
+            <doc>Calendar year in CE.</doc>
+            <eqn>2004</eqn>
+            <display x="854" y="42" color="blue" />
+        </aux>
+        <aux name="degperhour">
+            <eqn>4/60</eqn>
+            <units>hours/degree</units>
+            <display x="916" y="377" color="blue" />
+        </aux>
+        <aux name="salinity">
+            <doc>weiss 1970 salinity correction&#x0D;as per usgs 81.11&#x0D;&#x0D;&#x0D;To express the salinity &#x0D;correction factor in terms of specific conductance, an approximate &#x0D;relation as follows (4) is substituted into the equation,&#x0D;&#x0D; Salinity (o/oo) = 5.572 x 10-4 (SC) + 2.02 x 10-9 (SC)2 (4)&#x0D;&#x0D;where SC is the specific conductance in micromhos/cm. The error in &#x0D;using the approximate relation (4) as opposed to a more complex &#x0D;but accurate one is, at most, 8% in the low salinity range. This &#x0D;error affects the correction factor in the fourth place and is not &#x0D;a significant error for most work.</doc>
+            <eqn>0</eqn>
+            <display x="489" y="145" color="blue" />
+        </aux>
+        <aux name="Pmaxswitch">
+            <eqn>1</eqn>
+            <display x="230" y="471" color="blue" />
+        </aux>
+        <aux name="O2sat%">
+            <doc>O2 saturation in per cent.</doc>
+            <eqn>O2conc/O2satconc*100</eqn>
+            <units>Unitless</units>
+            <display x="533" y="279" color="blue" />
+        </aux>
+        <aux name="Tswitch">
+            <eqn>1</eqn>
+            <display x="412" y="94" color="blue" />
+        </aux>
+        <aux name="Tpoly">
+            <eqn>Tpoly5*LocalHour^5 + Tpoly4*LocalHour^4 + Tpoly3*LocalHour^3 + Tpoly2*LocalHour^2 + Tpoly1*LocalHour^1 + Tpoly0</eqn>
+            <display x="774" y="183" color="blue">
+                <label_side>right</label_side>
+                <label_angle>23</label_angle>
+            </display>
+        </aux>
+        <aux name="Tpoly0">
+            <eqn>0</eqn>
+            <display x="651" y="240" color="blue" />
+        </aux>
+        <aux name="Tpoly1">
+            <eqn>0</eqn>
+            <display x="704" y="242" color="blue" />
+        </aux>
+        <aux name="Tpoly2">
+            <eqn>0</eqn>
+            <display x="761" y="243" color="blue" />
+        </aux>
+        <aux name="Tpoly3">
+            <eqn>0</eqn>
+            <display x="816" y="241" color="blue" />
+        </aux>
+        <aux name="Tpoly4">
+            <eqn>0</eqn>
+            <display x="869" y="243" color="blue" />
+        </aux>
+        <aux name="Tpoly5">
+            <eqn>0</eqn>
+            <display x="924" y="242" color="blue" />
+        </aux>
+        <aux name="RArrheniusswitch">
+            <doc>The switch for the Van&apos;t Hoff-Arrhenius equation to adjust the rate of respiration (at 20 C) to the current temperature.</doc>
+            <eqn>1</eqn>
+            <display x="384" y="271" color="blue" />
+        </aux>
+        <display show_pages="false" page_width="594" page_height="774" page_sequence="row" page_rows="3" page_cols="3" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="100" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.25" report_every_dt="true" report_balances="ending" report_flows="summed" scroll_x="0" scroll_y="0">
+            <alias x="532" y="370" uid="0">
+                <of>Volume</of>
+            </alias>
+            <alias x="533" y="415" uid="1" color="blue">
+                <of>m3perL</of>
+            </alias>
+            <alias x="93" y="311" uid="2" color="blue">
+                <of>Lperm3</of>
+            </alias>
+            <alias x="184" y="328" uid="3">
+                <of>Area</of>
+            </alias>
+            <alias x="663" y="378" uid="4">
+                <of>TinK</of>
+            </alias>
+            <alias x="366" y="419" uid="5">
+                <of>Area</of>
+            </alias>
+            <alias x="364" y="794" uid="6">
+                <of>O2satconc</of>
+            </alias>
+            <alias x="397" y="795" uid="7">
+                <of>O2conc</of>
+            </alias>
+            <alias x="560" y="154" uid="8">
+                <of>AtmPressure&#x0D;Correction</of>
+            </alias>
+            <alias x="309" y="792" uid="9">
+                <of>Ratioair</of>
+            </alias>
+            <alias x="203" y="793" uid="10">
+                <of>Area</of>
+            </alias>
+            <alias x="538" y="593" uid="11">
+                <of>Ratioair</of>
+            </alias>
+            <alias x="485" y="531" uid="12">
+                <of>alphaGeq</of>
+            </alias>
+            <alias x="307" y="751" uid="13">
+                <of>alphaGeq</of>
+            </alias>
+            <alias x="202" y="752" uid="14">
+                <of>Lperm3</of>
+            </alias>
+            <alias x="565" y="654" uid="15">
+                <of>RatioVSMOW</of>
+            </alias>
+            <alias x="312" y="1448" uid="16">
+                <of>DayOfYear</of>
+            </alias>
+            <alias x="532" y="1098" uid="17">
+                <of>SolarConstant</of>
+            </alias>
+            <alias x="212" y="1098" uid="18">
+                <of>SolarHour</of>
+            </alias>
+            <alias x="292" y="1098" uid="19" color="blue">
+                <of>DayOfYear</of>
+            </alias>
+            <alias x="212" y="1248" uid="20" color="blue">
+                <of>Latitude</of>
+            </alias>
+            <alias x="252" y="1448" uid="21">
+                <of>SolarConstant</of>
+            </alias>
+            <alias x="109" y="434" uid="22">
+                <of>PRLMPmaxmodifier</of>
+            </alias>
+            <alias x="92" y="97" uid="23" color="blue">
+                <of>Longitude</of>
+            </alias>
+            <alias x="127" y="97" uid="24" color="blue">
+                <of>TZ</of>
+            </alias>
+            <alias x="164" y="97" uid="25" color="blue">
+                <of>DST</of>
+            </alias>
+            <alias x="93" y="610" uid="26">
+                <of>RatioVSMOW</of>
+            </alias>
+            <alias x="201" y="707" uid="27">
+                <of>alphaGk</of>
+            </alias>
+            <alias x="358" y="711" uid="28">
+                <of>alphaR</of>
+            </alias>
+            <alias x="166" y="707" uid="29">
+                <of>alphaP</of>
+            </alias>
+            <alias x="49" y="97" uid="30">
+                <of>degperhour</of>
+            </alias>
+            <alias x="482" y="279" uid="31">
+                <of>O2satconc</of>
+            </alias>
+            <alias x="93" y="271" uid="32">
+                <of>O2satconc</of>
+            </alias>
+            <alias x="335" y="271" uid="33">
+                <of>TinC</of>
+            </alias>
+            <alias x="680" y="178" uid="34" color="blue">
+                <of>LocalHour</of>
+            </alias>
+            <alias x="460" y="94" uid="35">
+                <of>Tpoly</of>
+            </alias>
+            <connector x="180" y="275" uid="36" color="#FF007F">
+                <from>GErate</from>
+                <to>GEmass</to>
+            </connector>
+            <connector x="193" y="328" uid="37" color="#FF007F">
+                <from>
+                    <alias uid="3" />
+                </from>
+                <to>GEmass</to>
+            </connector>
+            <connector x="272" y="408" uid="38" color="#FF007F">
+                <from>O2mass</from>
+                <to>O2conc</to>
+            </connector>
+            <connector x="102" y="271" uid="39" color="#FF007F">
+                <from>
+                    <alias uid="32" />
+                </from>
+                <to>GErate</to>
+            </connector>
+            <connector x="479" y="383" uid="40" color="#FF007F">
+                <from>O2conc</from>
+                <to>GErate</to>
+            </connector>
+            <connector x="31" y="469" uid="41" color="#FF007F">
+                <from>k</from>
+                <to>GErate</to>
+            </connector>
+            <connector x="482" y="288" uid="42" color="#FF007F">
+                <from>
+                    <alias uid="31" />
+                </from>
+                <to>diffO2conc</to>
+            </connector>
+            <connector x="482" y="383" uid="43" color="#FF007F">
+                <from>O2conc</from>
+                <to>diffO2conc</to>
+            </connector>
+            <connector x="421" y="57" uid="44" color="#FF007F">
+                <from>TinC</from>
+                <to>TinK</to>
+            </connector>
+            <connector x="525" y="411" uid="45" color="#FF007F">
+                <from>
+                    <alias uid="1" />
+                </from>
+                <to>O2conc</to>
+            </connector>
+            <connector x="101" y="307" uid="46" color="#FF007F">
+                <from>
+                    <alias uid="2" />
+                </from>
+                <to>GErate</to>
+            </connector>
+            <connector x="524" y="374" uid="47" color="#FF007F">
+                <from>
+                    <alias uid="0" />
+                </from>
+                <to>O2conc</to>
+            </connector>
+            <connector x="335" y="336" uid="48" color="#FF007F">
+                <from>Rrate</from>
+                <to>Rmass</to>
+            </connector>
+            <connector x="221" y="426" uid="49" color="#FF007F">
+                <from>Pmaxrate</from>
+                <to>Pmass</to>
+            </connector>
+            <connector x="184" y="337" uid="50" color="#FF007F">
+                <from>
+                    <alias uid="3" />
+                </from>
+                <to>Pmass</to>
+            </connector>
+            <connector x="359" y="413" uid="51" color="#FF007F">
+                <from>
+                    <alias uid="5" />
+                </from>
+                <to>Rmass</to>
+            </connector>
+            <connector x="160" y="618" uid="52" color="#FF007F">
+                <from>RatioH2O</from>
+                <to>Pmassiso</to>
+            </connector>
+            <connector x="276" y="648" uid="53" color="#FF007F">
+                <from>O2massiso</from>
+                <to>RatioO2</to>
+            </connector>
+            <connector x="354" y="703" uid="54" color="#FF007F">
+                <from>
+                    <alias uid="28" />
+                </from>
+                <to>Rmassiso</to>
+            </connector>
+            <connector x="169" y="699" uid="55" color="#FF007F">
+                <from>
+                    <alias uid="29" />
+                </from>
+                <to>Pmassiso</to>
+            </connector>
+            <connector x="184" y="401" uid="56" color="#FF007F">
+                <from>Pmass</from>
+                <to>Pmassiso</to>
+            </connector>
+            <connector x="335" y="398" uid="57" color="#FF007F">
+                <from>Rmass</from>
+                <to>Rmassiso</to>
+            </connector>
+            <connector x="476" y="658" uid="58" color="#FF007F">
+                <from>RatioO2</from>
+                <to>Rmassiso</to>
+            </connector>
+            <connector x="266" y="408" uid="59" color="#FF007F">
+                <from>O2mass</from>
+                <to>RatioO2</to>
+            </connector>
+            <connector x="358" y="788" uid="60" type="info" color="#FF007F">
+                <from>
+                    <alias uid="6" />
+                </from>
+                <to>GEmassiso</to>
+            </connector>
+            <connector x="391" y="788" uid="61" type="info" color="#FF007F">
+                <from>
+                    <alias uid="7" />
+                </from>
+                <to>GEmassiso</to>
+            </connector>
+            <connector x="560" y="66" uid="62" color="#FF007F">
+                <from>O2satcon1atm</from>
+                <to>O2satconc</to>
+            </connector>
+            <connector x="505" y="57" uid="63" color="#FF007F">
+                <from>TinK</from>
+                <to>O2satcon1atm</to>
+            </connector>
+            <connector x="25" y="486" uid="64" color="#FF007F">
+                <from>k</from>
+                <to>GEmassiso</to>
+            </connector>
+            <connector x="476" y="661" uid="65" color="#FF007F">
+                <from>RatioO2</from>
+                <to>GEmassiso</to>
+            </connector>
+            <connector x="485" y="649" uid="66" color="#FF007F">
+                <from>RatioO2</from>
+                <to>diffd18OO2</to>
+            </connector>
+            <connector x="560" y="145" uid="67" color="#FF007F">
+                <from>
+                    <alias uid="8" />
+                </from>
+                <to>O2satconc</to>
+            </connector>
+            <connector x="529" y="593" uid="68" color="#FF007F">
+                <from>
+                    <alias uid="11" />
+                </from>
+                <to>diffd18OO2</to>
+            </connector>
+            <connector x="672" y="377" uid="69" type="info" color="#FF007F">
+                <from>
+                    <alias uid="4" />
+                </from>
+                <to>alphaGeq</to>
+            </connector>
+            <connector x="209" y="786" uid="70" color="#FF007F">
+                <from>
+                    <alias uid="10" />
+                </from>
+                <to>GEmassiso</to>
+            </connector>
+            <connector x="211" y="749" uid="71" color="#FF007F">
+                <from>
+                    <alias uid="14" />
+                </from>
+                <to>GEmassiso</to>
+            </connector>
+            <connector x="558" y="649" uid="72" color="#FF007F">
+                <from>
+                    <alias uid="15" />
+                </from>
+                <to>diffd18OO2</to>
+            </connector>
+            <connector x="485" y="667" uid="73" color="#FF007F">
+                <from>RatioO2</from>
+                <to>d18OO2</to>
+            </connector>
+            <connector x="558" y="659" uid="74" color="#FF007F">
+                <from>
+                    <alias uid="15" />
+                </from>
+                <to>d18OO2</to>
+            </connector>
+            <connector x="681" y="44" uid="75" color="#FF007F">
+                <from>Area</from>
+                <to>Volume</to>
+            </connector>
+            <connector x="645" y="76" uid="76" color="#FF007F">
+                <from>Depth</from>
+                <to>Volume</to>
+            </connector>
+            <connector x="284" y="139" uid="77" type="info" color="#FF007F">
+                <from>Tmin_in_C</from>
+                <to>TmaxminCheck</to>
+            </connector>
+            <connector x="211" y="58" uid="78" type="info" color="#FF007F">
+                <from>Tmodifier</from>
+                <to>TinC</to>
+            </connector>
+            <connector x="81" y="1148" uid="79" color="#FF007F">
+                <from>slope</from>
+                <to>cosIncide</to>
+            </connector>
+            <connector x="79" y="1104" uid="80" color="#FF007F">
+                <from>aspect</from>
+                <to>cosIncide</to>
+            </connector>
+            <connector x="81" y="1348" uid="81" color="#FF007F">
+                <from>altitude</from>
+                <to>AtmPressure&#x0D;Correction</to>
+            </connector>
+            <connector x="292" y="1107" uid="82" color="#FF007F">
+                <from>
+                    <alias uid="19" />
+                </from>
+                <to>SolarDeclination</to>
+            </connector>
+            <connector x="212" y="1107" uid="83" color="#FF007F">
+                <from>
+                    <alias uid="18" />
+                </from>
+                <to>HourAng</to>
+            </connector>
+            <connector x="221" y="1248" uid="84" color="#FF007F">
+                <from>
+                    <alias uid="20" />
+                </from>
+                <to>SolarAltitude2</to>
+            </connector>
+            <connector x="292" y="1157" uid="85" color="#FF007F">
+                <from>SolarDeclination</from>
+                <to>SolarAltitude2</to>
+            </connector>
+            <connector x="218" y="1155" uid="86" color="#FF007F">
+                <from>HourAng</from>
+                <to>SolarAltitude2</to>
+            </connector>
+            <connector x="301" y="1248" uid="87" color="#FF007F">
+                <from>SolarAltitude2</from>
+                <to>SolarAltitude1</to>
+            </connector>
+            <connector x="284" y="1153" uid="88" color="#FF007F">
+                <from>SolarDeclination</from>
+                <to>SolarAzimuth</to>
+            </connector>
+            <connector x="206" y="1155" uid="89" color="#FF007F">
+                <from>HourAng</from>
+                <to>SolarAzimuth</to>
+            </connector>
+            <connector x="203" y="1248" uid="90" color="#FF007F">
+                <from>
+                    <alias uid="20" />
+                </from>
+                <to>SolarAzimuth</to>
+            </connector>
+            <connector x="360" y="1252" uid="91" color="#FF007F">
+                <from>SolarAltitude1</from>
+                <to>SolarAzimuth</to>
+            </connector>
+            <connector x="364" y="1245" uid="92" color="#FF007F">
+                <from>SolarAltitude1</from>
+                <to>cosIncide</to>
+            </connector>
+            <connector x="132" y="1239" uid="93" color="#FF007F">
+                <from>SolarAzimuth</from>
+                <to>cosIncide</to>
+            </connector>
+            <connector x="80" y="1395" uid="94" color="#FF007F">
+                <from>transmisivity</from>
+                <to>OpCorr</to>
+            </connector>
+            <connector x="490" y="137" uid="95" color="#FF007F">
+                <from>salinity</from>
+                <to>O2satcon1atm</to>
+            </connector>
+            <connector x="306" y="1441" uid="96" color="#FF007F">
+                <from>
+                    <alias uid="16" />
+                </from>
+                <to>Souterlayer</to>
+            </connector>
+            <connector x="255" y="1440" uid="97" color="#FF007F">
+                <from>
+                    <alias uid="21" />
+                </from>
+                <to>Souterlayer</to>
+            </connector>
+            <connector x="263" y="1398" uid="98" color="#FF007F">
+                <from>Souterlayer</from>
+                <to>Snormal</to>
+            </connector>
+            <connector x="212" y="1357" uid="99" color="#FF007F">
+                <from>OpCorr</from>
+                <to>Snormal</to>
+            </connector>
+            <connector x="431" y="168" uid="100" color="#FF007F">
+                <from>Tmaxminarray</from>
+                <to>TinC</to>
+            </connector>
+            <connector x="141" y="1348" uid="101" color="#FF007F">
+                <from>AtmPressure&#x0D;Correction</from>
+                <to>OpCorr</to>
+            </connector>
+            <connector x="364" y="1253" uid="102" color="#FF007F">
+                <from>SolarAltitude1</from>
+                <to>OpCorr</to>
+            </connector>
+            <connector x="219" y="1392" uid="103" color="#FF007F">
+                <from>Snormal</from>
+                <to>Sdirect</to>
+            </connector>
+            <connector x="137" y="1155" uid="104" color="#FF007F">
+                <from>cosIncide</from>
+                <to>Sdirect</to>
+            </connector>
+            <connector x="281" y="1398" uid="105" color="#FF007F">
+                <from>Souterlayer</from>
+                <to>Sdiffusive</to>
+            </connector>
+            <connector x="221" y="1351" uid="106" color="#FF007F">
+                <from>OpCorr</from>
+                <to>Sdiffusive</to>
+            </connector>
+            <connector x="372" y="1257" uid="107" color="#FF007F">
+                <from>SolarAltitude1</from>
+                <to>Sdiffusive</to>
+            </connector>
+            <connector x="381" y="1398" uid="108" color="#FF007F">
+                <from>Sdiffusive</from>
+                <to>Stotal</to>
+            </connector>
+            <connector x="281" y="1350" uid="109" color="#FF007F">
+                <from>Sdirect</from>
+                <to>Stotal</to>
+            </connector>
+            <connector x="532" y="1389" uid="110" color="#FF007F">
+                <from>Stotal</from>
+                <to>PotentialRadiation</to>
+            </connector>
+            <connector x="209" y="1106" uid="111" color="#FF007F">
+                <from>
+                    <alias uid="18" />
+                </from>
+                <to>SolarAzimuthCorrection</to>
+            </connector>
+            <connector x="132" y="1257" uid="112" color="#FF007F">
+                <from>SolarAzimuth</from>
+                <to>SolarAzimuthCorrection</to>
+            </connector>
+            <connector x="532" y="1107" uid="113" color="#FF007F">
+                <from>
+                    <alias uid="17" />
+                </from>
+                <to>PRLMPmaxmodifier</to>
+            </connector>
+            <connector x="532" y="1189" uid="114" color="#FF007F">
+                <from>PotentialRadiation</from>
+                <to>PRLMPmaxmodifier</to>
+            </connector>
+            <connector x="117" y="430" uid="115" color="#FF007F">
+                <from>
+                    <alias uid="22" />
+                </from>
+                <to>Pmass</to>
+            </connector>
+            <connector x="66" y="58" uid="116" color="#FF007F">
+                <from>LocalHour</from>
+                <to>SolarHour</to>
+            </connector>
+            <connector x="157" y="91" uid="117" color="#FF007F">
+                <from>
+                    <alias uid="25" />
+                </from>
+                <to>SolarHour</to>
+            </connector>
+            <connector x="124" y="89" uid="118" color="#FF007F">
+                <from>
+                    <alias uid="24" />
+                </from>
+                <to>SolarHour</to>
+            </connector>
+            <connector x="97" y="90" uid="119" color="#FF007F">
+                <from>
+                    <alias uid="23" />
+                </from>
+                <to>SolarHour</to>
+            </connector>
+            <connector x="128" y="58" uid="120" color="#FF007F">
+                <from>SolarHour</from>
+                <to>Tmodifier</to>
+            </connector>
+            <connector x="202" y="87" uid="121" color="#FF007F">
+                <from>Tdelay</from>
+                <to>Tmodifier</to>
+            </connector>
+            <connector x="102" y="610" uid="122" color="#FF007F">
+                <from>
+                    <alias uid="26" />
+                </from>
+                <to>RatioH2O</to>
+            </connector>
+            <connector x="156" y="552" uid="123" color="#FF007F">
+                <from>d18OH2O</from>
+                <to>RatioH2O</to>
+            </connector>
+            <connector x="376" y="327" uid="124" color="#FF007F">
+                <from>Rrate20</from>
+                <to>Rrate</to>
+            </connector>
+            <connector x="335" y="280" uid="125" color="#FF007F">
+                <from>
+                    <alias uid="33" />
+                </from>
+                <to>Rrate</to>
+            </connector>
+            <connector x="209" y="711" uid="126" color="#FF007F">
+                <from>
+                    <alias uid="27" />
+                </from>
+                <to>GEmassiso</to>
+            </connector>
+            <connector x="57" y="93" uid="127" type="info" color="#FF007F">
+                <from>
+                    <alias uid="30" />
+                </from>
+                <to>SolarHour</to>
+            </connector>
+            <connector x="303" y="785" uid="128" color="#FF007F">
+                <from>
+                    <alias uid="9" />
+                </from>
+                <to>GEmassiso</to>
+            </connector>
+            <connector x="225" y="463" uid="129" color="#FF007F">
+                <from>Pmaxswitch</from>
+                <to>Pmass</to>
+            </connector>
+            <connector x="486" y="384" uid="130" color="#FF007F">
+                <from>O2conc</from>
+                <to>O2sat%</to>
+            </connector>
+            <connector x="491" y="279" uid="131" color="#FF007F">
+                <from>
+                    <alias uid="31" />
+                </from>
+                <to>O2sat%</to>
+            </connector>
+            <connector x="412" y="85" uid="132" color="#FF007F">
+                <from>Tswitch</from>
+                <to>TinC</to>
+            </connector>
+            <connector x="367" y="93" uid="133" type="info" color="#FF007F">
+                <from>TmaxminCheck</from>
+                <to>Tmaxminarray</to>
+            </connector>
+            <connector x="286" y="93" uid="134" type="info" color="#FF007F">
+                <from>Tmax_in_C</from>
+                <to>TmaxminCheck</to>
+            </connector>
+            <connector x="659" y="236" uid="135" type="info" color="#FF007F">
+                <from>Tpoly0</from>
+                <to>Tpoly</to>
+            </connector>
+            <connector x="711" y="236" uid="136" type="info" color="#FF007F">
+                <from>Tpoly1</from>
+                <to>Tpoly</to>
+            </connector>
+            <connector x="763" y="234" uid="137" type="info" color="#FF007F">
+                <from>Tpoly2</from>
+                <to>Tpoly</to>
+            </connector>
+            <connector x="811" y="234" uid="138" type="info" color="#FF007F">
+                <from>Tpoly3</from>
+                <to>Tpoly</to>
+            </connector>
+            <connector x="861" y="238" uid="139" type="info" color="#FF007F">
+                <from>Tpoly4</from>
+                <to>Tpoly</to>
+            </connector>
+            <connector x="916" y="239" uid="140" type="info" color="#FF007F">
+                <from>Tpoly5</from>
+                <to>Tpoly</to>
+            </connector>
+            <connector x="689" y="178" uid="141" type="info" color="#FF007F">
+                <from>
+                    <alias uid="34" />
+                </from>
+                <to>Tpoly</to>
+            </connector>
+            <connector x="453" y="89" uid="142" type="info" color="#FF007F">
+                <from>
+                    <alias uid="35" />
+                </from>
+                <to>TinC</to>
+            </connector>
+            <connector x="299" y="748" uid="143" color="#FF007F">
+                <from>
+                    <alias uid="13" />
+                </from>
+                <to>GEmassiso</to>
+            </connector>
+            <connector x="378" y="278" uid="144" color="#FF007F">
+                <from>RArrheniusswitch</from>
+                <to>Rrate</to>
+            </connector>
+            <connector x="485" y="540" uid="145" color="#FF007F">
+                <from>
+                    <alias uid="12" />
+                </from>
+                <to>diffd18OO2</to>
+            </connector>
+            <group name="Location_and_Date" locked="true" x="622" y="25" width="294" height="111" isee:opaque="true" isee:show_header="true">
+                <border-color>red</border-color>
+                <border-style>solid</border-style>
+                <border-width>thin</border-width>
+                <entity name="Area" />
+                <entity name="Depth" />
+                <entity name="Volume" />
+                <entity name="DayOfYear" />
+                <entity name="DST" />
+                <entity name="Latitude" />
+                <entity name="Longitude" />
+                <entity name="TZ" />
+                <entity name="Year" />
+            </group>
+            <group name="Convertion_factors_and_constants" locked="true" x="623" y="306" width="346" height="111" isee:opaque="true" isee:show_header="true">
+                <border-color>red</border-color>
+                <border-style>solid</border-style>
+                <border-width>thin</border-width>
+                <entity name="Ratioair" />
+                <entity name="RatioVSMOW" />
+                <entity name="Lperm3" />
+                <entity name="m3perL" />
+                <entity name="SolarConstant" />
+                <item>.4</item>
+                <entity name="alphaGeq" />
+                <entity name="alphaGk" />
+                <entity name="alphaP" />
+                <entity name="alphaR" />
+                <entity name="degperhour" />
+            </group>
+            <group name="Potential_Radiation_Light_Model" locked="true" x="18" y="1046" width="579" height="457" isee:opaque="true" isee:show_header="true">
+                <border-color>red</border-color>
+                <border-style>solid</border-style>
+                <border-width>thin</border-width>
+                <item>.18</item>
+                <item>.19</item>
+                <item>.20</item>
+                <entity name="altitude" />
+                <entity name="aspect" />
+                <entity name="AtmPressure_Correction" />
+                <entity name="cosIncide" />
+                <entity name="HourAng" />
+                <entity name="OpCorr" />
+                <entity name="Sdiffusive" />
+                <entity name="Sdirect" />
+                <entity name="slope" />
+                <entity name="Snormal" />
+                <entity name="SolarAltitude1" />
+                <entity name="SolarAltitude2" />
+                <entity name="SolarAzimuth" />
+                <entity name="SolarAzimuthCorrection" />
+                <entity name="SolarDeclination" />
+                <entity name="Souterlayer" />
+                <entity name="transmisivity" />
+                <item>.17</item>
+                <entity name="PotentialRadiation" />
+                <entity name="PRLMPmaxmodifier" />
+                <entity name="Stotal" />
+                <item>.16</item>
+                <item>.21</item>
+            </group>
+            <group name="Time_and_Temperature" locked="true" x="7" y="25" width="601" height="178" isee:opaque="true" isee:show_header="true">
+                <border-color>red</border-color>
+                <border-style>solid</border-style>
+                <border-width>thin</border-width>
+                <item>.23</item>
+                <item>.24</item>
+                <item>.25</item>
+                <item>.30</item>
+                <entity name="LocalHour" />
+                <entity name="SolarHour" />
+                <entity name="Tdelay" />
+                <entity name="Tmax_in_C" />
+                <entity name="Tmin_in_C" />
+                <entity name="TmaxminCheck" />
+                <entity name="Tmodifier" />
+                <entity name="Tmaxminarray" />
+                <entity name="TinC" />
+                <item>.8</item>
+                <item>.35</item>
+                <entity name="O2satcon1atm" />
+                <entity name="O2satconc" />
+                <entity name="salinity" />
+                <entity name="TinK" />
+                <entity name="Tswitch" />
+            </group>
+            <group name="Mass_and_isotope_model" locked="true" x="6" y="246" width="601" height="585" isee:opaque="true" isee:show_header="true">
+                <border-color>red</border-color>
+                <border-style>solid</border-style>
+                <border-width>thin</border-width>
+                <item>.2</item>
+                <item>.3</item>
+                <item>.32</item>
+                <item>.33</item>
+                <entity name="GEmass" />
+                <entity name="GErate" />
+                <entity name="RArrheniusswitch" />
+                <entity name="Rrate" />
+                <item>.31</item>
+                <entity name="diffO2conc" />
+                <entity name="O2sat%" />
+                <entity name="Rrate20" />
+                <item>.22</item>
+                <item>.26</item>
+                <item>.27</item>
+                <item>.29</item>
+                <entity name="O2mass" />
+                <entity name="O2massiso" />
+                <entity name="GEmassiso" />
+                <entity name="Pmass" />
+                <entity name="Pmassiso" />
+                <entity name="Rmass" />
+                <entity name="Rmassiso" />
+                <entity name="d18OH2O" />
+                <entity name="k" />
+                <entity name="Pmaxrate" />
+                <entity name="Pmaxswitch" />
+                <entity name="RatioH2O" />
+                <item>.0</item>
+                <item>.1</item>
+                <item>.5</item>
+                <item>.11</item>
+                <item>.12</item>
+                <item>.15</item>
+                <entity name="diffd18OO2" />
+                <entity name="O2conc" />
+                <entity name="RatioO2" />
+                <item>.6</item>
+                <item>.9</item>
+                <item>.10</item>
+                <item>.13</item>
+                <item>.14</item>
+                <item>.28</item>
+                <item>.7</item>
+                <entity name="d18OO2" />
+            </group>
+            <group name="Temperature_5th_Order_Polynomial" locked="true" x="622" y="162" width="335" height="115" isee:opaque="true" isee:show_header="true">
+                <border-color>red</border-color>
+                <border-style>solid</border-style>
+                <border-width>thin</border-width>
+                <item>.34</item>
+                <entity name="Tpoly0" />
+                <entity name="Tpoly1" />
+                <entity name="Tpoly" />
+                <entity name="Tpoly2" />
+                <entity name="Tpoly3" />
+                <entity name="Tpoly4" />
+                <entity name="Tpoly5" />
+            </group>
+        </display>
+        <interface scroll_x="0" scroll_y="0" zoom="100">
+            <simulation_delay>0</simulation_delay>
+            <pages show="false" row_count="5" column_count="3" home_page="1" width="1012" height="696" />
+            <stacked_container x="12" y="71" height="254" width="450" visible_index="0" uid="pad_86970838">
+                <graph type="time_series" title="Dissolved Oxygen Concentration" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:hide_detail="true" comparative="true" time_precision="2" from="0" to="48">
+                    <doc>Plot of O2 concentration versus time.</doc>
+                    <plot pen_width="1" precision="0">
+                        <index>0</index>
+                        <color>blue</color>
+                        <show_y_axis>true</show_y_axis>
+                        <entity name="O2conc" />
+                        <data name="Run 1 data" />
+                    </plot>
+                </graph>
+            </stacked_container>
+            <pad_icon x="41" y="95" width="26" height="22" color="fuchsia" label="O2conc" type="graph" icon_of="pad_86970838">
+                <label_side>bottom</label_side>
+            </pad_icon>
+            <stacked_container x="468" y="71" height="254" width="450" visible_index="0" uid="pad_86971802">
+                <graph type="time_series" title="delta Oxygen-18 Dissolved Oxygen" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:hide_detail="true" comparative="true" time_precision="2" from="0" to="48">
+                    <doc>Plot of d18O-O2 versus time.</doc>
+                    <plot pen_width="1" precision="0">
+                        <index>0</index>
+                        <color>blue</color>
+                        <show_y_axis>true</show_y_axis>
+                        <entity name="d18OO2" />
+                        <data name="Run 1 data" />
+                    </plot>
+                </graph>
+                <graph type="time_series" title="" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-736981160" time_precision="2" from="0" to="48" />
+                <graph type="time_series" title="" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-736981160" comparative="true" time_precision="2" from="0" to="48" />
+                <graph type="time_series" title="" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:date_time="-736981160" time_precision="2" from="0" to="48" />
+            </stacked_container>
+            <pad_icon x="503" y="95" width="26" height="22" color="fuchsia" label="d18OO2" type="graph" icon_of="pad_86971802">
+                <label_side>bottom</label_side>
+            </pad_icon>
+            <stacked_container x="12" y="1202" height="551" width="930" visible_index="0" uid="pad_86972108">
+                <graph type="scatter" title="Cross Plots" background="#FFFFC9" show_grid="false" numbers_on_plots="true" isee:use_five_segments="false" isee:hide_detail="true" comparative="true" time_precision="2">
+                    <doc>Plot of O2 saturation versus d18O-O2.&#x0D;&#x0D;N.B.: Air-saturated water is 100% saturation and has a d18O-O2 value about 24.2 per mill.</doc>
+                    <plot pen_width="1" precision="0">
+                        <index>0</index>
+                        <color>blue</color>
+                        <show_y_axis>true</show_y_axis>
+                        <scale min="0" max="0" />
+                        <entity name="O2sat%" />
+                        <data name="Run 1 data" />
+                    </plot>
+                </graph>
+            </stacked_container>
+            <pad_icon x="63" y="1216" width="26" height="22" color="fuchsia" label="Cross plot" type="graph" icon_of="pad_86972108">
+                <label_side>bottom</label_side>
+            </pad_icon>
+            <stacked_container x="1754" y="79" height="198" width="579" visible_index="0" uid="pad_86972738">
+                <table title="PoRGy Data" font-size="9" background="#E0E0E0" columns_width="60" orientation="vertical" report_every_dt="true" isee:periods="193" report_from="0" report_to="48" report_balances="ending" report_flows="summed" isee:hide_detail="true">
+                    <item type="time" color="black" text-align="left" precision="0" width="100" />
+                    <item color="black" text-align="left" precision="2" thousands_separator="true">
+                        <entity name="LocalHour" />
+                        <index>0</index>
+                    </item>
+                    <item color="black" text-align="left" precision="2" thousands_separator="true">
+                        <entity name="O2conc" />
+                        <index>1</index>
+                    </item>
+                    <item color="black" text-align="left" precision="2" thousands_separator="true">
+                        <entity name="O2sat%" />
+                        <index>2</index>
+                    </item>
+                    <item color="black" text-align="left" precision="2" thousands_separator="true">
+                        <entity name="d18OO2" />
+                        <index>3</index>
+                    </item>
+                    <item color="black" text-align="left" precision="2" thousands_separator="true">
+                        <entity name="Pmass" />
+                        <index>4</index>
+                    </item>
+                    <item color="black" text-align="left" precision="2" thousands_separator="true">
+                        <entity name="Rmass" />
+                        <index>5</index>
+                    </item>
+                    <item color="black" text-align="left" precision="2" thousands_separator="true">
+                        <entity name="GEmass" />
+                        <index>6</index>
+                    </item>
+                    <item color="black" text-align="left" precision="2" thousands_separator="true">
+                        <entity name="TinC" />
+                        <index>7</index>
+                    </item>
+                </table>
+            </stacked_container>
+            <pad_icon x="1781" y="116" width="26" height="22" color="#008F44" label="Table 1" type="table" icon_of="pad_86972738">
+                <label_side>bottom</label_side>
+            </pad_icon>
+            <stacked_container x="1754" y="289" height="161" width="581" visible_index="0" uid="pad_86973702">
+                <table title="Difference Data" font-size="9" background="#E0E0E0" columns_width="60" orientation="vertical" report_every_dt="true" isee:periods="193" report_from="0" report_to="48" report_balances="ending" report_flows="summed" isee:hide_detail="true">
+                    <item type="time" color="black" text-align="left" precision="0" width="100" />
+                    <item color="black" text-align="left" precision="2" thousands_separator="true">
+                        <entity name="LocalHour" />
+                        <index>0</index>
+                    </item>
+                    <item color="black" text-align="left" precision="2" thousands_separator="true">
+                        <entity name="diffO2conc" />
+                        <index>1</index>
+                    </item>
+                    <item color="black" text-align="left" precision="2" thousands_separator="true">
+                        <entity name="diffd18OO2" />
+                        <index>2</index>
+                    </item>
+                </table>
+            </stacked_container>
+            <pad_icon x="1771" y="309" width="26" height="22" color="#008F44" label="Table 2" type="table" icon_of="pad_86973702">
+                <label_side>bottom</label_side>
+            </pad_icon>
+            <stacked_container x="1754" y="460" height="159" width="581" visible_index="0" uid="pad_86974078">
+                <table title="Solar Data" font-size="9" background="#E0E0E0" columns_width="60" orientation="vertical" report_every_dt="true" isee:periods="193" report_from="0" report_to="48" report_balances="ending" report_flows="summed" isee:hide_detail="true">
+                    <item type="time" color="black" text-align="left" precision="0" width="100" />
+                    <item color="black" text-align="left" precision="2" thousands_separator="true">
+                        <entity name="PotentialRadiation" />
+                        <index>0</index>
+                    </item>
+                    <item color="black" text-align="left" precision="2" thousands_separator="true">
+                        <entity name="PRLMPmaxmodifier" />
+                        <index>1</index>
+                    </item>
+                </table>
+            </stacked_container>
+            <pad_icon x="1771" y="484" width="26" height="22" color="#008F44" label="Table 3" type="table" icon_of="pad_86974078">
+                <label_side>bottom</label_side>
+            </pad_icon>
+            <stacked_container x="361" y="330" width="318" height="268" visible_index="0">
+                <list_input x="361" y="330" color="#7F00FF" width="318" height="268" index="0" name="Geographic Inputs" name_col_width="125">
+                    <numeric_input font-weight="bold" min="-89.9" max="89.9" precision="5">
+                        <entity name="Latitude">
+                            <value>52.5104</value>
+                        </entity>
+                    </numeric_input>
+                    <numeric_input font-weight="bold" min="-180" max="180" precision="5">
+                        <entity name="Longitude">
+                            <value>-106.415</value>
+                        </entity>
+                    </numeric_input>
+                    <numeric_input font-weight="bold" min="-12" max="14" precision="5">
+                        <entity name="TZ">
+                            <value>-5</value>
+                        </entity>
+                    </numeric_input>
+                    <numeric_input font-weight="bold" min="0" max="1" precision="5">
+                        <entity name="DST">
+                            <value>0</value>
+                        </entity>
+                    </numeric_input>
+                    <numeric_input font-weight="bold" min="1" max="365" precision="5">
+                        <entity name="DayOfYear">
+                            <value>197</value>
+                        </entity>
+                    </numeric_input>
+                    <numeric_input font-weight="bold" min="1950" max="2050" precision="5">
+                        <entity name="Year">
+                            <value>2005</value>
+                        </entity>
+                    </numeric_input>
+                    <numeric_input font-weight="bold" min="0" max="6000" precision="5">
+                        <entity name="altitude">
+                            <value>550</value>
+                        </entity>
+                    </numeric_input>
+                    <numeric_input min="0.001" max="360" precision="5">
+                        <entity name="aspect" />
+                    </numeric_input>
+                    <numeric_input min="0.001" max="89.99" precision="5">
+                        <entity name="slope" />
+                    </numeric_input>
+                    <numeric_input min="0.4" max="0.8" precision="5">
+                        <entity name="transmisivity" />
+                    </numeric_input>
+                    <numeric_input min="0" max="50000" precision="5">
+                        <entity name="Area" />
+                    </numeric_input>
+                    <numeric_input min="0" max="20" precision="5">
+                        <entity name="Depth">
+                            <value>0.65</value>
+                        </entity>
+                    </numeric_input>
+                </list_input>
+                <list_input x="361" y="330" color="#7F00FF" width="318" height="268" index="1" name="Initial Conditions">
+                    <numeric_input min="0" max="1.5e+020" precision="5">
+                        <entity name="O2mass">
+                            <value>4550</value>
+                        </entity>
+                    </numeric_input>
+                    <numeric_input min="0" max="1e+009" precision="5">
+                        <entity name="O2massiso">
+                            <value>9.29061</value>
+                        </entity>
+                    </numeric_input>
+                </list_input>
+                <list_input x="361" y="330" color="#7F00FF" width="318" height="268" index="2" name="Temperature, Metabolism, Salinity" name_col_width="163">
+                    <numeric_input min="0" max="2" precision="5">
+                        <entity name="Tswitch" />
+                    </numeric_input>
+                    <numeric_input min="0" max="2" precision="5">
+                        <entity name="RArrheniusswitch" />
+                    </numeric_input>
+                    <numeric_input min="0" max="45" precision="5">
+                        <entity name="salinity" />
+                    </numeric_input>
+                </list_input>
+            </stacked_container>
+            <stacked_container x="1807" y="1160" width="385" height="287" visible_index="0">
+                <list_input x="1807" y="1160" color="#7F00FF" width="385" height="287" index="0" name="Temperature 5th Order Polynomial" name_col_width="255">
+                    <numeric_input min="-50" max="50" precision="5">
+                        <entity name="Tpoly0" />
+                    </numeric_input>
+                    <numeric_input min="-50" max="50" precision="5">
+                        <entity name="Tpoly1" />
+                    </numeric_input>
+                    <numeric_input min="-50" max="50" precision="5">
+                        <entity name="Tpoly2" />
+                    </numeric_input>
+                    <numeric_input min="-50" max="50" precision="5">
+                        <entity name="Tpoly3" />
+                    </numeric_input>
+                    <numeric_input min="-50" max="50" precision="5">
+                        <entity name="Tpoly4" />
+                    </numeric_input>
+                    <numeric_input min="-50" max="50" precision="5">
+                        <entity name="Tpoly5" />
+                    </numeric_input>
+                </list_input>
+            </stacked_container>
+            <slider x="88" y="509" color="red" width="155" height="43" min="0" max="1">
+                <entity name="k" />
+            </slider>
+            <slider x="253" y="510" color="red" width="155" height="43" min="0" max="10000">
+                <entity name="Pmaxrate">
+                    <value>1640</value>
+                </entity>
+            </slider>
+            <slider x="253" y="392" color="red" width="155" height="43" min="0" max="4000">
+                <entity name="Rrate20">
+                    <value>340</value>
+                </entity>
+            </slider>
+            <slider x="88" y="391" color="red" width="155" height="43" min="0" max="40">
+                <entity name="Tmax_in_C">
+                    <value>24.5</value>
+                </entity>
+            </slider>
+            <slider x="88" y="450" color="red" width="155" height="43" min="0" max="40">
+                <entity name="Tmin_in_C">
+                    <value>20.4</value>
+                </entity>
+            </slider>
+            <slider x="253" y="451" color="red" width="155" height="43" min="0.95" max="1" increment="0.001">
+                <entity name="alphaR">
+                    <value>0.998</value>
+                </entity>
+            </slider>
+            <slider x="88" y="568" color="red" width="155" height="43" min="-30" max="5">
+                <entity name="d18OH2O">
+                    <value>-7</value>
+                </entity>
+            </slider>
+            <button x="267" y="12" width="60" height="36" uid="146" appearance="opaque" background="#30CB32" color="white" style="rounded" clicking_sound="false" label="Run" font-family="Arial" font-size="12" text-align="center">
+                <menu_action>run</menu_action>
+            </button>
+            <button x="2574" y="1149" width="63" height="34" uid="147" appearance="opaque" background="#0CA0FF" color="white" style="square" clicking_sound="false" label="Data Tables" font-family="Arial" font-size="12" text-align="center">
+                <link target="interface" x="1744" y="0" />
+            </button>
+            <button x="335" y="13" width="66" height="35" uid="148" appearance="opaque" background="red" color="white" style="rounded" clicking_sound="false" label="Stop" font-family="Arial" font-size="12" text-align="center">
+                <menu_action>stop</menu_action>
+            </button>
+            <button x="2431" y="1150" width="75" height="32" uid="149" appearance="opaque" background="#0CA0FF" color="white" style="square" clicking_sound="false" label="PoRGy Controls" font-family="Arial" font-size="12" text-align="center">
+                <link target="interface" x="0" y="0" />
+            </button>
+            <button x="2515" y="1149" width="52" height="34" uid="150" appearance="opaque" background="#0CA0FF" color="white" style="square" clicking_sound="false" label="Cross Plots" font-family="Arial" font-size="12" text-align="center">
+                <link target="interface" x="0" y="1136" />
+            </button>
+            <button x="4345" y="66" width="63" height="34" uid="151" appearance="opaque" background="#0CA0FF" color="white" style="square" clicking_sound="false" label="Data Tables" font-family="Arial" font-size="12" text-align="center" />
+            <button x="4186" y="67" width="75" height="32" uid="152" appearance="opaque" background="#0CA0FF" color="white" style="square" clicking_sound="false" label="PoRGy Controls" font-family="Arial" font-size="12" text-align="center" />
+            <button x="839" y="14" width="63" height="34" uid="153" appearance="opaque" background="#0CA0FF" color="white" style="square" clicking_sound="false" label="Data Tables" font-family="Arial" font-size="12" text-align="center">
+                <link target="interface" x="1744" y="0" />
+            </button>
+            <button x="696" y="15" width="75" height="32" uid="154" appearance="opaque" background="#0CA0FF" color="white" style="square" clicking_sound="false" label="Advanced Inputs" font-family="Arial" font-size="12" text-align="center">
+                <link target="interface" x="1744" y="1136" />
+            </button>
+            <button x="4270" y="66" width="68" height="34" uid="155" appearance="opaque" background="#0CA0FF" color="white" style="square" clicking_sound="false" label="Advanced Inputs" font-family="Arial" font-size="12" text-align="center" />
+            <button x="780" y="14" width="52" height="34" uid="156" appearance="opaque" background="#0CA0FF" color="white" style="square" clicking_sound="false" label="Cross Plots" font-family="Arial" font-size="12" text-align="center">
+                <link target="interface" x="0" y="1136" />
+            </button>
+            <button x="2608" y="10" width="63" height="34" uid="157" appearance="opaque" background="#0CA0FF" color="white" style="square" clicking_sound="false" label="Cross Plots" font-family="Arial" font-size="12" text-align="center">
+                <link target="interface" x="0" y="1136" />
+            </button>
+            <button x="2449" y="11" width="75" height="32" uid="158" appearance="opaque" background="#0CA0FF" color="white" style="square" clicking_sound="false" label="PoRGy Controls" font-family="Arial" font-size="12" text-align="center">
+                <link target="interface" x="0" y="0" />
+            </button>
+            <button x="2533" y="10" width="68" height="34" uid="159" appearance="opaque" background="#0CA0FF" color="white" style="square" clicking_sound="false" label="Advanced Inputs" font-family="Arial" font-size="12" text-align="center">
+                <link target="interface" x="1744" y="1136" />
+            </button>
+            <button x="408" y="13" width="97" height="35" uid="160" appearance="opaque" background="black" color="white" style="rounded" label="Reset Graphs/Tables" font-family="Arial" font-size="12" text-align="center">
+                <menu_action>restore_graphs_tables</menu_action>
+            </button>
+            <button x="512" y="13" width="96" height="34" uid="161" appearance="opaque" background="black" color="white" style="rounded" label="Reset All" font-family="Arial" font-size="12" text-align="center">
+                <menu_action>restore_all</menu_action>
+            </button>
+            <button x="909" y="14" width="34" height="34" uid="162" appearance="opaque" background="#0CA0FF" color="white" style="square" label="Quit" font-family="Arial" font-size="12" text-align="center">
+                <menu_action>exit</menu_action>
+            </button>
+            <button x="864" y="1146" width="63" height="34" uid="163" appearance="opaque" background="#0CA0FF" color="white" style="square" clicking_sound="false" label="Data Tables" font-family="Arial" font-size="12" text-align="center">
+                <link target="interface" x="1744" y="0" />
+            </button>
+            <button x="705" y="1147" width="75" height="32" uid="164" appearance="opaque" background="#0CA0FF" color="white" style="square" clicking_sound="false" label="PoRGy Controls" font-family="Arial" font-size="12" text-align="center">
+                <link target="interface" x="0" y="0" />
+            </button>
+            <button x="789" y="1146" width="68" height="34" uid="165" appearance="opaque" background="#0CA0FF" color="white" style="square" clicking_sound="false" label="Advanced Inputs" font-family="Arial" font-size="12" text-align="center">
+                <link target="interface" x="1744" y="1136" />
+            </button>
+            <text_box x="12" y="330" uid="166" color="#7F00FF" font-family="Arial" font-size="12" text-align="center" margin="5" border-style="solid" border-width="thin" width="154" height="25">Measured Variables</text_box>
+            <text_box x="176" y="330" uid="167" color="#7F00FF" font-family="Arial" font-size="12" text-align="center" margin="5" border-style="solid" border-width="thin" width="154" height="25">Modelled Variables</text_box>
+            <text_box x="1745" y="1138" uid="168" color="red" font-family="Arial" font-size="18" font-weight="bold" text-align="center" lock_text="true" margin="15" border-style="double" border-width="thin" width="424" height="57">PoRGy oxygen model: advanced inputs</text_box>
+            <text_box x="1" y="2" uid="169" color="red" font-family="Arial" font-size="18" font-weight="bold" text-align="center" lock_text="true" margin="15" border-style="double" border-width="thin" width="257" height="56">PoRGy oxygen model</text_box>
+            <text_box x="678" y="330" uid="170" color="#7F00FF" font-family="Arial" font-size="9" lock_text="true" margin="5" border-style="solid" border-width="thin" width="241" height="282" vertical_scrollbar="true">&#x0A;Latitude: ° (+ve=N)&#x0D;Longitude: ° (+ve=E)&#x0D;Time Zone: hours (+ve=E of GMT)&#x0D;Daylight Saving Time: hours (1=yes)&#x0D;Year: years (Common Era)&#x0D;Altitude: metres&#x0D;Aspect: ° (orientation of the surface to the N-S axes of the sun, default=0.001)&#x0D;Slope: ° (slope of the surface, default=0.001)&#x0D;Transmissivity of the air: fractional (default=0.8, typically 0.5-0.8, as low as 0.4 in tropics)&#x0D;&#x0D;Area: square metres&#x0D;Depth: metres&#x0D;Volume: &#x0A;Area * Depth (unless otherwise specified)&#x0D;&#x0D;O2mass in mg&#x0D;O2massiso in mg*R&#x0D;&#x0D;Tswitch: 1= sinusoid with max &amp; min, 2= 5th order polynomial (see Advanced Inputs)&#x0D;RAwwheniusswitch: 1=+Arrhenius, 0=-Arrhenius&#x0D;Salinity: ppt (g/kg, default=0)</text_box>
+            <text_box x="11" y="589" uid="171" color="#7F00FF" font-family="Arial" font-size="9" lock_text="true" margin="5" border-style="solid" border-width="thin" width="154" height="55">Temperature: °Celcius&#x0D;k: m/hr (gas exchange coef)&#x0D;d18O-H2O: ‰ (18:16 H2O)</text_box>
+            <text_box x="3482" y="58" uid="172" color="red" font-family="Arial" font-size="18" font-weight="bold" text-align="center" lock_text="true" margin="15" border-style="double" border-width="thin" width="424" height="57">PoRGy oxygen model: cross plots</text_box>
+            <text_box x="2338" y="77" uid="173" color="red" font-family="Arial" font-size="10" text-align="center" margin="5" border-style="solid" border-width="thin" width="257" height="249">NOTES:&#x0D;These tables will contain all the data from a single run that might be useful for export.&#x0D;&#x0D;PoRGy Data: Concentrations, isotopes, rates, temps.&#x0D;Rates are specific to the time interval on which they are calculated, i.e. mgO/DT/m2.&#x0D;To calculate the P:R:G ratio, take the P, R, and G rates from the last 24h period, calculate the absolute sum of the rates, and normalise to the GEmass.&#x0D;&#x0D;Difference Data: difference between air-saturated water and the values at a given time.&#x0D;&#x0D;Solar Data: Incoming solar radiation from the Potential Radiation Light Model and the multiplier used on the Pmaxrate.</text_box>
+            <text_box x="2133" y="1197" uid="174" color="#7F00FF" font-family="Arial" font-size="12" margin="5" border-style="solid" border-width="thin" width="509" height="287">Temp 5th order polynomial of the form:&#x0D;Tpoly0 + Tpoly1 * x^1 + Tpoly2 * x^2 + Tpoly3 * x^3 + Tpoly4 * x^4 + Tpoly5 * x^5&#x0D;&#x0D;&#x0D;&#x0D;&#x0D;</text_box>
+            <text_box x="1745" y="2" uid="175" color="red" font-family="Arial" font-size="18" font-weight="bold" text-align="center" lock_text="true" margin="15" border-style="double" border-width="thin" width="424" height="57">PoRGy oxygen model: data tables</text_box>
+            <text_box x="176" y="531" uid="176" color="#7F00FF" font-family="Arial" font-size="9" lock_text="true" margin="5" border-style="solid" border-width="thin" width="155" height="118">Rrate20: mgO/m2/hr (nominal R rate at 20°C)&#x0D;alphaR: fractional (oxygen isotopic fractionation, &lt;=1)&#x0D;Pmaxrate: mgO/m2/hr (theoretical maximum rate of O2 production, scaled by the amount of incoming light)</text_box>
+            <text_box x="411" y="618" uid="177" color="red" font-family="Arial" font-size="10" text-align="right" lock_text="true" margin="5" border-style="solid" border-width="thin" width="567" height="40">©2006 JJ Venkiteswaran. PoRGy v1.00-S Sask River. See Venkiteswaran et al. Oecologia for more details.&#x0D;This model is licensed under the creativecommons by-nc-nd license. http://creativecommons.org/licenses/by-nc-nd/2.5/&#x0D;http://creativecommons.org/licenses/by-nc-nd/2.5/</text_box>
+            <text_box x="1" y="1138" uid="178" color="red" font-family="Arial" font-size="18" font-weight="bold" text-align="center" lock_text="true" margin="15" border-style="double" border-width="thin" width="424" height="57">PoRGy oxygen model: cross plots</text_box>
+        </interface>
+    </model>
+    <model name="TmaxminCheck">
+        <aux name="Tmax_in_C" access="input">
+            <units>degrees C</units>
+            <display x="183" y="176" color="blue" />
+        </aux>
+        <aux name="Tmin_in_C" access="input">
+            <units>degrees C</units>
+            <display x="283" y="176" color="blue" />
+        </aux>
+        <array name="Tmaxminarray" access="output">
+            <dimensions>
+                <dim name="Temperature" />
+            </dimensions>
+            <aux>
+                <subscript>Tmax</subscript>
+                <eqn>If .Tmax_in_C&gt;.Tmin_in_C THEN .Tmax_in_C ELSE .Tmin_in_C</eqn>
+                <units>degrees C</units>
+            </aux>
+            <aux>
+                <subscript>Tmin</subscript>
+                <eqn>If .Tmax_in_C&gt;.Tmin_in_C THEN .Tmin_in_C ELSE .Tmax_in_C</eqn>
+                <units>degrees C</units>
+            </aux>
+            <units>degrees C</units>
+            <to>Tmaxminarray</to>
+            <display x="83" y="76" color="blue" />
+        </array>
+        <display show_pages="false" page_width="594" page_height="774" page_sequence="row" page_rows="1" page_cols="1" isee:show_values_on_hover="true" isee:converter_size="medium" zoom="100" isee:animate_flows="true" isee:animate_stocks="true" isee:animate_converters="true" report_interval="0.25" report_every_dt="true" report_balances="ending" report_flows="summed" scroll_x="0" scroll_y="0">
+            <connector x="177" y="170" uid="179" color="#FF007F">
+                <from>Tmax_in_C</from>
+                <to>Tmaxminarray</to>
+            </connector>
+            <connector x="275" y="172" uid="180" color="#FF007F">
+                <from>Tmin_in_C</from>
+                <to>Tmaxminarray</to>
+            </connector>
+        </display>
+        <interface scroll_x="0" scroll_y="0" zoom="100">
+            <simulation_delay>0</simulation_delay>
+            <pages show="false" row_count="1" column_count="1" home_page="1" width="1012" height="696" />
+        </interface>
+    </model>
+</xmile>
